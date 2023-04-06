@@ -1,0 +1,153 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/thomas-lowry/figma-plugin-ds/dist/figma-plugin-ds.css">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+
+  body {
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    line-height: 160%;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+  }
+
+  div {
+    display: block;
+  }
+
+  .purchaseFooter {
+    padding: 16px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    background-color: white;
+    border: 1px solid #e6e6e6;
+  }
+
+  button {
+    height: 48px;
+    padding: 0px 40px 0px 40px;
+    color: #534C50;
+    background-color: #FFBDAC;
+    border: 0px;
+    border-radius: 24px;
+    font-size: 16px;
+  }
+
+  button.small {
+    height: 40px;
+    padding: 0px 24px 0px 24px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
+  button.light {
+    background-color: transparent;
+    text-decoration: underline;
+  }
+ 
+  button:hover {
+    background-color: #FF987D;
+    color: black;
+
+  }
+
+  button.light:hover {
+    background-color: #f2f2f2;
+    color: black;
+  }
+
+  *{
+   font-family: sans-serif;
+   font-size: 12px;
+   margin: 0;
+   box-sizing: border-box;
+  }
+
+  #resize{
+    height: 100%;
+    padding: 16px;
+  }
+
+  #corner{
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    cursor: ns-resize;
+  }
+</style>
+
+<!-- content - not yet created. A  placeholder page is in here for now -->
+<div class="content">
+  <iframe src="https://www.adamgraydesign.com/" class="fKqTNmb771PjnZTYm44Xj" name="myiFrame" scrolling="yes" frameborder="0" marginheight="0" marginwidth="0" height="100%" width="100%" allowfullscreen="true"></iframe>
+
+<!-- payment footer -->
+  <div class="purchaseFooter">
+    <!--Enter  license key button to open modal to capture license key-->
+    <button class="small light">Enter license key</button>
+    <!--Unlock all lessons button to open modal to kick off payment flow-->
+    <button class="small" id="enterLicenseKeyButton" >Unlock all lessons</button>
+  </div>  
+</div>
+<script>
+  document.getElementById('enterLicenseKeyButton').onclick = () => {
+    console.log("Unlock all lessons button clicked")
+    /* Payment api - unfinishedand not working. Is this event the correct place for the code? Should it be in code.ts?
+    async function checkAndRunPaidFeatureCode() {
+      if (figma.payments.status.type === "UNPAID") {
+        await figma.payments.initiateCheckoutAsync({
+          interstitial: "PAID_FEATURE"
+        })
+        if (figma.payments.status.type === "UNPAID") {
+          figma.notify("Please upgrade to use this feature.")
+          return
+        }
+      }
+      console.log("PAID MESSAGE");
+      // DO STUFF
+    }
+    */
+
+    
+
+    //console.log("Unlock all lessons button clicked");
+  }
+  
+</script>
+
+<!-- resize window -->
+<div id="resize">
+  <svg id="corner" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 0V16H0L16 0Z" fill="white"/>
+    <path d="M6.22577 16H3L16 3V6.22576L6.22577 16Z" fill="#c6c6c6"/>
+    <path d="M11.8602 16H8.63441L16 8.63441V11.8602L11.8602 16Z" fill="#c6c6c6"/>
+  </svg>
+</div>
+<script>
+  const corner = document.getElementById('corner');
+  function resizeWindow(e) {
+    const size = {
+      w: 375,
+      h: Math.max(50,Math.floor(e.clientY+5))
+    };
+    parent.postMessage( { pluginMessage: { type: 'resize', size: size }}, '*');
+  }
+  corner.onpointerdown = (e)=>{
+    corner.onpointermove = resizeWindow;
+    corner.setPointerCapture(e.pointerId);
+  };
+  corner.onpointerup = (e)=>{
+    corner.onpointermove = null;
+    corner.releasePointerCapture(e.pointerId);
+  };
+</script>
+
